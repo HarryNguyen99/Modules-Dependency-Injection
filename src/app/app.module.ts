@@ -2,9 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-// import { ImageCardComponent } from './image-gallery/image-card/image-card.component';
 import {ImageGalleryModule} from './image-gallery/image-gallery.module';
 import {GalleryConfig} from './image-gallery/token';
+import {ImgSliderModule} from './img-slider/img-slider.module';
+import {AuthService} from './auth.service';
+
+
+
 
 @NgModule({
     declarations: [
@@ -12,9 +16,23 @@ import {GalleryConfig} from './image-gallery/token';
     ],
     imports: [
         BrowserModule,
-        ImageGalleryModule
+      ImgSliderModule,
+      ImageGalleryModule,
     ],
-    providers: [{provide: GalleryConfig, useValue: 1}],
-    bootstrap: [AppComponent]
+  providers: [
+    {provide: AuthService, useClass: AuthService},
+    {provide: 'API_ENDPOINT', useValue: 'http://api.example.com'},
+    {provide: 'API_URL', useExisting: 'API_ENDPOINT'},
+    {
+      provide: 'some-token',
+      useFactory: function() {
+        return Math.random();
+      }
+    },
+    // {provide: 'API_URL', useValue: 'abc.com'},
+    // {provide: 'API_URL', useExisting: 'api.com'}
+    {provide: GalleryConfig, useValue: 2}
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
